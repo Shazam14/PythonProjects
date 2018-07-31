@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">LGMS HOME ACCESS</a>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Students Database</h2>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">STUDENT NAME</th>
+      <th scope="col">PARENTS NAME</th>
+      <th scope="col">GRADE YEAR</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for studentbio in object_list %}
+    <tr>
+      <th scope="row">#</th>
+      <td>{{ studentbio.studentname}}</td>
+      <td>{{ studentbio.momsname}}</td>
+      <td>{{ studentbio.popsname}}</td>
+      <td>{{ studentbio.gradeyear}}</td>
+      {% empty %}
+      <td> No Students Yet </td>
+      { % endfor %}
+    </tr>
+  </tbody>
+  {% endfor %}
+
+</table>
+{% endblock %}
+
+
+<!-- <ul>
+    {% for studentbio in object_list %}
+      <li>{{ studentbio.studentname}} - {{studentbio.parentsnameinfo}} - {{studentbio.gradeyear}} </li>
+    {% empty %}
+    <li> No Students yet</li>
+    {% endfor %}
+</ul> -->

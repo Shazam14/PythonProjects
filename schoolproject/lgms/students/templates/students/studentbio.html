@@ -1,0 +1,71 @@
+{ % extends 'base.html'%}
+
+{% block title %}
+TESTING only
+{% endblock %}
+
+
+
+{% block body %}
+      <h1>STUDENT BIO</h1>
+      <!-- <td>{{student.popsname}}</td>
+      <td>{{student.gradeyear}}</td>
+      <td></td>
+      <td>{{student.teachersname}}</td> -->
+      <div class="col-md-7">
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Student User Name</th>
+                <th>Student Moms Name</th>
+                <th>Student Fathers Name</th>
+                <th>Student Connected User ID</th>
+                <th>Student Student NAMEs ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% for studentcheck in studentbios %}
+                <td>{{studentcheck.user }}</td>
+                <td>{{studentcheck.user.name}}</td>
+                <td>{{studentcheck.user.fathersname}}</td>
+                <td>{{studentcheck.user.id}}</td>
+                <td><a href="{% url 'studentbioid' studentcheck.id %} ">{{ studentcheck.id }}</a></td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h6>THIS IS A TEST FOR HOME PAGE</h6>
+        <div class="container">
+          <div class="col-md-12">
+              <h2>Kids Information</h2>
+              <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Student Complete Name</th>
+                      <th>Application Type</th>
+                      <th>Student Grade Year</th>
+                      <th>Information Lists Test</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{user.studentname.studentname}}</td>
+                      <td>{{user.applicationtype}}</td>
+                      <td>{{user.studentname.groupinfo}}</td>
+                      <td><a href="#">{{user.studentbioidinfo.id}}</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Please contact Administration if there are correction or errors.</p>
+          </div>
+        </div>
+
+      </div>
+
+
+{% endblock %}

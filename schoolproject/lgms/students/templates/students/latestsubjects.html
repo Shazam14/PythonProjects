@@ -1,0 +1,11 @@
+{% if latestusers %}
+    <ul>
+      {% for subjects in latestusers %}
+          <li> <a href="{% url 'detail' subjects.id %}">{{ subjects.subjectname }}</a></li>
+
+          <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+      {% endfor %}
+    </ul>
+{% else %}
+  <p>No Updated Subjects</p>
+{% endif %}
