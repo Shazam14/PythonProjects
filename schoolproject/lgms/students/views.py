@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, TemplateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 from django.views import generic
 from django.template import loader
 from django.db import transaction
@@ -11,23 +11,12 @@ from django.contrib.auth import update_session_auth_hash
 
 from django.contrib.auth.decorators import login_required
 
-#login
 from django.contrib.auth import login
-#test for user retrieval of edit profile
 from django.contrib.auth.models import User
-##decorator
-from .models import StudentBio, CustomUser
-
-
-from .forms import CustomUserCreationForm, EditProfileForm, MedicalForm, CustomUserChangeForm
+from .models import StudentBio, CustomUser, IllnessInfo, PresentCondition, HospitalInfo, ImmunisationInfo, AccidentInfo
+from .forms import CustomUserCreationForm, EditProfileForm, CustomUserChangeForm, PresentConditionForm
 
 from django.contrib import messages
-
-
-def usercheck(request, pk):
-    pass
-
-
 
 
 def slist(request):
@@ -35,7 +24,15 @@ def slist(request):
     context = {
         "studentbios": StudentBio.objects.all()
     }
-    return render(request, "home.html", context)
+    return render(request, "students/home.html", context)
+
+
+def ucheck(request):
+
+    context = {
+        "userbio": Users.objects.all()
+    }
+    return render(request, "students/home.html", context)
 
     #original
     #return render(request, "students/studentbio.html", context)
@@ -69,7 +66,92 @@ class StudentBioList(ListView):
 
 
 
+############################## MEDICAL FORM ####################################
 
+
+class PresentConditionCreate(CreateView):
+    model = PresentCondition
+    fields = ['user', 'name', 'currentcondition', 'conditiondetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+
+class PresentConditionUpdate(UpdateView):
+    model = PresentCondition
+    fields = ['user', 'name', 'currentcondition', 'conditiondetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+
+class PresentConditionDelete(DeleteView):
+    model = PresentCondition
+    fields = ['user', 'name', 'currentcondition', 'conditiondetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    success_url = reverse_lazy('students/home')
+##############################ILLNESS FORM ####################################
+class IllnessInfoCreate(CreateView):
+    model = IllnessInfo
+    fields = ['user', 'name', 'illnessinfo', 'illnessdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+class IllnessInfoUpdate(UpdateView):
+    model = IllnessInfo
+    fields = ['user', 'name', 'illnessinfo', 'illnessdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+class IllnessInfoDelete(DeleteView):
+    model = IllnessInfo
+    fields = ['user', 'name', 'illnessinfo', 'illnessdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    success_url = reverse_lazy('students/home')
+
+##############################ILLNESS FORM ####################################
+
+
+##############################HOSPITAL FORM ####################################
+
+class HospitalInfoCreate(CreateView):
+    model = HospitalInfo
+    fields = ['user', 'name', 'reasonforhospital', 'hospitalisationdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+class HospitalInfoUpdate(UpdateView):
+    model = HospitalInfo
+    fields = ['user', 'name', 'reasonforhospital', 'hospitalisationdetails', 'treatmentdetails',  'startperiodofillness', 'endperiodillness']
+
+class HospitalInfoDelete(DeleteView):
+    model = HospitalInfo
+    fields = ['user', 'name', 'reasonforhospital', 'hospitalisationdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    success_url = reverse_lazy('students/home')
+
+##############################HOSPITAL FORM ####################################
+
+##############################ACCIDENT FORM ####################################
+
+class AccidentInfoCreate(CreateView):
+    model = AccidentInfo
+    fields = ['user', 'name', 'accidentdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+class AccidentInfoUpdate(UpdateView):
+    model = AccidentInfo
+    fields = ['user', 'name', 'accidentdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+
+class AccidentInfoDelete(DeleteView):
+    model = HospitalInfo
+    fields = ['user', 'name', 'accidentdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    success_url = reverse_lazy ('students/home')
+
+##############################ACCIDENT FORM ####################################
+
+
+##############################IMMUNE FORM ####################################
+class ImmunisationInfoCreate(CreateView):
+    model = ImmunisationInfo
+    fields = ['user','name', 'immunedetails', 'treatmentdetails', 'startperiodofimmune', 'endperiodimmune']
+
+class ImmunisationInfoUpdate(UpdateView):
+    model = ImmunisationInfo
+    fields = ['user', 'name', 'immunedetails', 'treatmentdetails', 'startperiodofimmune', 'endperiodimmune']
+
+class ImmunisationInfoDelete(DeleteView):
+    model = ImmunisationInfo
+    fields = ['user', 'name', 'immunedetails', 'treatmentdetails', 'startperiodofimmune', 'endperiodimmune']
+    success_url = reverse_lazy ('students/home')
+
+
+
+##############################IMMUNE FORM ####################################
 class DetailView(generic.DetailView):
     model = StudentBio
     template_name = 'students/studentbiodetail.html'
@@ -96,6 +178,29 @@ def editprofile(request):
         profileform = EditProfileForm(instance=request.user)
         return render (request, 'students/editprofile.html', {'profileform': profileform})
 
+
+##############################PRESENT CONDITION FORM####################################
+def presentcondition(request):
+    try:
+        profile = request.user.id
+    except User.DoesNotExist:
+        profile = CustomUser(user=request.user)
+    if request.method == 'POST':
+        medicalform = PresentConditionForm(request.POST, user=request.user)
+        if medicalform.is_valid():
+            medicalform.save()
+            update_session_auth_hash(request, form.users)
+            return redirect('home')
+        else:
+            message.error(request, ('FORM INCOMPLETE'))
+    else:
+        medicalform = PresentConditionForm(instance=request.user)
+        return render (request, 'students/medicalform.html', {'medicalform' : medicalform })
+
+
+
+
+##############################CHANGE PASSWORD####################################
 def changepassword(request):
     try:
         passwordprofile = request.user.id
@@ -116,18 +221,9 @@ def changepassword(request):
         return render(request, 'students/changepassword.html', {'passwordchangeform' : passwordchangeform})
 
 
-# class StudentCharacters():
-#
-#
-# class MedicalRecords():
-#
-#
-# class Pagunlad():
-#
-#
-# class FinancialAssessment():
 
-#this is to view the latest users request
+
+
 def latestsubjects(request):
 
     latest_subjects = Subjects.objects.order_by('id')

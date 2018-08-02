@@ -32,14 +32,14 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active {% url 'home' %}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
               <span data-feather="home"></span>
                Dashboard <span class="sr-only">(current)</span>
             </a>
           </li>
           <!-- this is where we change the url link for users -->
           <li class="nav-item">
-            <a class="nav-link {% url 'home' %}" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+            <a class="nav-link " id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
               <span data-feather="user"></span>
               Student Profile
             </a>
@@ -184,7 +184,7 @@
           </div>
           <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
         </div>
-        <!-- second section test -->
+        <!-- second section for profile test -->
         <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="container bootstrap snippet">
            <div class="profile card" id="profilecard">
@@ -195,7 +195,6 @@
                                <img class="img-thumbnail md-margin-bottom-10" src="https://bootdey.com/img/Content/user-453533-fdadfd.png" alt="">
                            </div>
                            <div class="col-md-7">
-
                                <div class="table-responsive">
                                  <table class="table table-striped table-sm">
                                    <thead>
@@ -249,7 +248,6 @@
                   <td>Grade</td>
                 </tr>
                 {% endfor %}
-
               </tbody>
             </table>
           </div>
@@ -285,19 +283,140 @@
         </div>
         <!-- this is for medical records -->
         <div class="tab-pane" id="medical" role="tabpanel" aria-labelledby="medical-tab">
-          <h2>MEDICAL RECORDS</h2>
-          <div class="container">
-            <form method="post">
-              {% csrf_token %}
-              {{ form | crispy }}
-              <input type="submit" value="Submit" />
-            </form>
+          <h2>Medical Present Condition Report</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">
+                <a href="{% url 'presentcondition-add' %}">Submit Medical Report</a></button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                {% for %}
+                <tr>
+                  <th>Current Condition</th>
+                  <th>Condition Details</th>
+                  <th>Treatment Details</th>
+                  <th>End Period Illness</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <!-- this is for medical records -->
+          <h2>Illness Report</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">
+                <a href="{% url 'illnessinfo-add' %}">Submit Illness Report</a></button>
+            </div>
           </div>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th>PresentCondition</th>
+                  <th>Illness Info</th>
+                  <th>Medical Info</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                  <td>sit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <!-- this is for medical records -->
+          <h2>Hospitalisation Report</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">
+                <a href="{% url 'hospitalinfo-add' %}">Submit Hospitalisation Report</a></button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Hospitalisation Info</th>
+                  <th>Medical Info</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                  <td>sit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <!-- this is for medical records -->
+          <h2>Accident Information Report</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">
+                <a href="{% url 'accidentinfo-add' %}">Submit Accident Report</a></button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Accident Information Report</th>
+                  <th>Medical Info</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                  <td>sit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <h2>Immunisation Report Information</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">
+                <a href="{% url 'immunisationinfo-add' %}">Submit Immune Report</a></button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Immunisation Info</th>
                   <th>Medical Info</th>
                   <th>Header</th>
                   <th>Header</th>
@@ -316,7 +435,6 @@
             </table>
           </div>
         </div>
-
         <!-- this is for pagunlad ratings -->
         <div class="tab-pane" id="pagunlad" role="tabpanel" aria-labelledby="pagunlad-tab">
           <h2>Pag-Unlad Ratings</h2>
@@ -403,18 +521,6 @@
 <main role="main" class="inner cover">
   <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Welcome to LGMS </a>
-    <!-- <a href="{% url 'logout'  %}">
-      <button type="button" class="btn btn-default btn-sm {% url 'password_reset' %}">
-      <span class="glyphicon glyphicon-log-out"></span> Reset My Password
-      </button>
-      <button type="button" class="btn btn-default btn-sm {% url 'logout' %}">
-      <span class="glyphicon glyphicon-log-out"></span> Edit Profile
-      </button>
-      <button type="button" class="btn btn-default btn-sm {% url 'logout' %}">
-      <span class="glyphicon glyphicon-log-out"></span> Log out
-      </button>
-    </a> -->
-    <!-- Example single danger button -->
       <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Register Below

@@ -26,8 +26,7 @@ class StudentsAdminSite(AdminSite):
 
 students_admin_site = StudentsAdminSite(name = 'students_admin')
 
-
-
+#FOR USERS
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -52,6 +51,21 @@ UserAdmin.add_fieldsets = (
             # 'fields' : ('email', 'password', 'username', 'name', 'address', 'dateofbirth', 'dateuserjoined', 'mobilenumber', 'civilstatus', 'religion', 'childsname')
     )
 
+# FOR STUDENT BIO IN PROFILE
+class StudentBioAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'studentname','momsname', 'popsname', 'guardiansname', 'gradeyear', 'financialinfo', 'profilepic']
+    search_fields = ['studentname__studentname']
+    list_filter = ['gradeyear']
+    #fields = ['user','studentname', 'momsname', 'popsname', 'guardiansname', 'gradeyear', 'teachersname', 'subjects', 'charactersets']
+    filter_horizontal = [ 'teachersname', 'subjects','charactersets']
+    #this has been added to test if we can edit the field
+    fieldsets = (
+        (None, {
+        'classes': ('wide', 'extrapretty'),
+        'fields': ('user', 'studentname','momsname', 'popsname', 'guardiansname', 'gradeyear', 'teachersname', 'subjects', 'charactersets', 'financialinfo', 'profilepic'),
+        }),
+    )
+
 class ParentsInfoAdmin(admin.ModelAdmin):
     list_display = ['mothersname', 'fathersname', 'guardiansname', 'address', 'email', 'mobilenumber' ]
     search_fields = ['mothersname__mothersname']
@@ -65,27 +79,11 @@ class TeachersAdmin(admin.ModelAdmin):
 class StudentsAdmin(admin.ModelAdmin):
     list_display = ['id', 'studentname', 'student_id', 'birthday', 'groupinfo']
 
-class StudentBioAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'studentname','momsname', 'popsname', 'guardiansname', 'gradeyear']
-    search_fields = ['studentname__studentname']
-    list_filter = ['gradeyear']
-    #fields = ['user','studentname', 'momsname', 'popsname', 'guardiansname', 'gradeyear', 'teachersname', 'subjects', 'charactersets']
-    filter_horizontal = [ 'teachersname', 'subjects','charactersets']
-    #this has been added to test if we can edit the field
-    fieldsets = (
-        (None, {
-        'classes': ('wide', 'extrapretty'),
-        'fields': ('user', 'studentname','momsname', 'popsname', 'guardiansname', 'gradeyear', 'teachersname', 'subjects', 'charactersets'),
-        }),
-    )
-
-
 class StudentGradesAdmin(admin.ModelAdmin):
     list_display = ['studentname', 'teachersname', 'subjectname', 'grades', 'dateperiod']
     fields  = ['studentname', 'teachersname', 'subjectname', 'grades', 'dateperiod']
     search_fields = ['studentname__studentname']
     list_filter = ['studentname']
-
 
 class CharacterRatingsAdmin(admin.ModelAdmin):
     list_display = ['studentname', 'charactersets', 'chargrades', 'dateadded']
@@ -101,52 +99,49 @@ class CharacterObservationAdmin(admin.ModelAdmin):
     list_filter = ['observegrades']
 
 class StatementAccountAdmin(admin.ModelAdmin):
-    pass
-
     list_display =['studentname', 'gradeyear', 'modeofpayment', 'modeofpaymentprice', 'modeofpaymenttotal', 'musicclassprice', 'bookspricetotal', 'notebooks', 'uniforms', 'other', 'totalprice', 'reservationfee', 'discount', 'gtotal']
-
     fields =['studentname', 'gradeyear', 'modeofpayment',  'modeofpaymentprice', 'modeofpaymenttotal', 'musicclassprice', 'bookspricetotal', 'notebooks', 'uniforms', 'other','totalprice', 'reservationfee', 'discount','gtotal']
     search_fields = ['studentname__studentname']
     list_filter = ['studentname',]
 
 
-####################################THIS IS WHERE WE END######################################################
-
-####################################THIS IS WHERE WE END######################################################
-
 class ComputeAdmin(admin.ModelAdmin):
     list_display = ['studentname', 'testpayment1', 'testpayment2' ]
 
 
-        # list_display =['studentname', 'gradeyear', 'modeofpayment', 'modeofpaymenttotal', 'modeofpaymentprice', 'musicclassprice', 'bookspricetotal', 'notebooks', 'uniforms', 'totalprice', 'reservationfee', 'discount', 'gtotal']
-        # # fields =['studentname', 'gradeyear', 'bookspricetotal', 'notebooks', 'uniforms', 'other', 'reservationfee', 'discount','gtotal']
-        # search_fields = ['studentname__studentname']
-        # list_filter = ['studentname',]
-        # read_only = ['modeofpaymentprice', 'totalprice']
-
-        # fieldsets = (
-        #     (None, {
-        #     'classes': ('wide', 'extrapretty'),
-        #     'fields': ('modeofpaymentprice', 'totalprice'),
-        #     }),
-        # )
-
-
 class PresentConditionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user','name', 'currentcondition', 'conditiondetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    fields = ['user', 'name', 'currentcondition', 'conditiondetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    search_fields = ['name__name']
+    list_filter = ['name', ]
 
 
 class IllnessInfoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'illnessinfo', 'illnessdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    fields = ['name', 'illnessinfo']
+    search_fields = ['name__name']
+    list_filter = ['name',]
+
 
 class HospitalInfoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'reasonforhospital', 'hospitalisationdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    fields = ['name', 'reasonforhospital']
+    search_fields = ['name__name']
+    list_filter = ['name',]
+
 
 class AccidentInfoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'accidentdetails', 'treatmentdetails', 'startperiodofillness', 'endperiodillness']
+    fields = ['name', 'accidentdetails']
+    search_fields = ['name__name']
+    list_filter = ['name',]
+
 
 class ImmunisationInfoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'immunedetails', 'treatmentdetails', 'startperiodofimmune', 'endperiodimmune']
+    fields = ['name', 'immunedetails']
+    search_fields = ['name__name']
+    list_filter = ['name',]
 
 # admin.site.unregister(FlatPage)
 # admin.site.register(FlatPage, FlatPageAdmin)

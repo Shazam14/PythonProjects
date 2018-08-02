@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from students.admin import students_admin_site
 
-#apps stay here for url 
+#apps stay here for url
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='students/home.html'), name='home'),

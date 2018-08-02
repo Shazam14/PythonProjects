@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{{% load crispy_forms_tags %}
+{% block title %} Edit Medical Form {% endblock %}
+
+
+{% block content %}
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    {% load static %}
+    <img src="{% static 'images/lgmslogo.jpg'%}" width="30" height="30" class="d-inline-block align-top" alt="">
+    LGMS EDIT PROFILE FORM
+  </a>
+  <a href="{% url 'logout'  %}">
+    <button type="button" class="btn btn-default btn-sm {% url 'logout' %}">
+    <span class="glyphicon glyphicon-log-out"></span> EXIT
+    </button>
+  </a>
+</nav>
+<div class="container">
+  <form method="post">
+    {% csrf_token  %}
+    {{ medicalform | crispy }}
+    <a href="{% url 'home' %}" class="btn btn-success" role="button">SUBMIT</a>
+  </form>
+
+<!-- #this is the original edit profile form  -->
+
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager, User
 from django.db import models
+from django.urls import reverse
 import django.utils.timezone
 from datetime import date
 from crispy_forms.helper import FormHelper
@@ -132,7 +133,7 @@ class Students(models.Model):
 
 
     }
-    groupinfo = models.CharField(max_length=10, choices=groupchoice, blank=True, default='CASA AM', help_text="Choose Group for Students")
+    groupinfo = models.CharField(max_length=64, choices=groupchoice, blank=True, default='CASA AM', help_text="Choose Group for Students")
 
     class Meta:
         verbose_name_plural = 'Student Lists'
@@ -189,6 +190,7 @@ class CharacterBuildingActivities(models.Model):
 
 
 class PresentCondition(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, max_length=64, on_delete=models.CASCADE, blank=False, null=True, verbose_name=" Parents Name ")
     name = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE)
     presentconditionchoices = {
         ('C', 'COLDS'),
@@ -211,11 +213,17 @@ class PresentCondition(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+    def get_absolute_url(self):
+        return reverse('studentbioid', kwargs={'pk' : self.pk})
+
     class Meta:
         verbose_name_plural = 'Student Present Condition'
 
 
+
+
 class IllnessInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, max_length=64, on_delete=models.CASCADE, blank=False, null=True, verbose_name=" Parents Name ")
     name = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE)
     illchoices = {
         ('A', 'Allergy'),
@@ -247,11 +255,16 @@ class IllnessInfo(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+        #createview in views.py testing
+    def get_absolute_url(self):
+        return reverse('studentbioid', kwargs={'pk' : self.pk})
+
     class Meta:
         verbose_name_plural = 'Student Illness Information'
 
 
 class HospitalInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, max_length=64, on_delete=models.CASCADE, blank=False, null=True, verbose_name=" Parents Name ")
     name = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE)
     reasonforhospital = models.CharField('Reason for Hospitalisation', max_length=64)
     hospitalisationdetails = models.TextField('Hospitalization Details', max_length=300)
@@ -262,21 +275,77 @@ class HospitalInfo(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+        def get_absolute_url(self):
+            return reverse('studentbioid', kwargs={'pk' : self.pk})
+
     class Meta:
         verbose_name_plural = 'Student Hospital Info'
 
 
 class AccidentInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, max_length=64, on_delete=models.CASCADE, blank=False, null=True, verbose_name=" Parents Name ")
     name = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE)
     accidentdetails = models.TextField('Accident Details', max_length=300)
     treatmentdetails = models.CharField('Treatment Details', max_length=64, help_text="If under treatment, please indicate dosage of drug")
     startperiodofillness = models.DateField('Date Started', default=date.today)
+    endperiodillness = models.DateField('Date Ended', default=date.today)
+
+    def __str__(self):
+        return '%s' % (self.name)
+
+        def get_absolute_url(self):
+            return reverse('studentbioid', kwargs={'pk' : self.pk})
 
     class Meta:
         verbose_name_plural = 'Student Accident Information'
 
 class ImmunisationInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, max_length=64, on_delete=models.CASCADE, blank=False, null=True, verbose_name=" Parents Name ")
     name = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE)
+
+    immunisationchoices = (
+
+        ('NONE', 'NONE'),
+        ('BCG', 'BCG'),
+        ('DPT1', 'DPT1'),
+        ('DPT2', 'DPT2'),
+        ('DPT3', 'DPT3'),
+        ('DPTB1', 'DPT Booster 1'),
+        ('DPTB2', 'DPT Booster 2'),
+        ('DPTB3', 'DPT Booster 3 range 13-19 years old'),
+        ('POLIO 1','PLIO1'),
+        ('POLIO2', 'PLIO2'),
+        ('POLIO3', 'PLIO3'),
+        ('POLIO BOOSTER 1', 'POLIO BOOSTER 1'),
+        ('POLIO BOOSTER 2', 'POLIO BOOSTER 2'),
+        ('HIB1', 'HIB 1'),
+        ('HIB2', 'HIB 2'),
+        ('HIB3', 'HIB 3'),
+        ('HIB BOOSTER', 'HIB BOOSTER'),
+        ('MEASLES', 'MEASLES'),
+        ('MMR', 'MMR'),
+        ('MMRB', 'MMRB'),
+        ('HEPATITIS B1', 'HEPATITIS B1'),
+        ('HEPATITIS B2', 'HEPATITIS B2'),
+        ('HEPATITIS B3', 'HEPATITIS B3'),
+        ('HEPATITIS B BOOSTER', 'HEPATITIS B BOOSTER'),
+        ('HEPATITIS A1', 'HEPATITIS A1'),
+        ('HEPATITIS A2', 'HEPATITIS A2'),
+        ('VARICELLA - CHICKEN POX', 'VARICELLA - CHICKEN POX'),
+        ('INFLUENZA', 'INFLUENZA'),
+        ('TYPHOID', 'TYPHOID'),
+    )
+    immuneinfo = models.CharField('Immunisation Choices', choices=immunisationchoices, default="NONE",max_length=64)
+    immunedetails = models.TextField('Immunisation Details', max_length=300, null=True, blank=True)
+    treatmentdetails = models.CharField('Treatment Details', null=True, blank=True, max_length=64, help_text="If under treatment, please indicate dosage of drug")
+    startperiodofimmune = models.DateField('Date Started', default=date.today)
+    endperiodimmune = models.DateField('Date Ended', default=date.today)
+
+    def __str__(self):
+        return '%s : %s ' % (self.name, self.immuneinfo)
+
+        def get_absolute_url(self):
+            return reverse('studentbioid', kwargs={'pk' : self.pk})
 
     class Meta:
         verbose_name_plural = 'Student Accident Immunisation Info'
@@ -299,10 +368,8 @@ class StudentBio(models.Model):
     subjects = models.ManyToManyField('Subjects', verbose_name="List of Subjects", related_name="subjectslist")
     charactersets = models.ManyToManyField('CharacterBuildingActivities', verbose_name="Character Sets")
     profilepic = models.ImageField('Student Profile Picture',upload_to='profile_image', blank=True)
-
-
-
-
+    #test to connect to financial statement of account - still need to modify table starting from here..
+    financialinfo = models.ForeignKey('StatementAccount', verbose_name="Statement of Account", on_delete=models.CASCADE, max_length=64, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Student Profile"
@@ -348,7 +415,7 @@ class CharacterRatings(models.Model):
         ('NEEDS IMPROVEMENT', 'NI'),
         ('UNSATISFACTORY / FAILED', 'U')
     }
-    chargrades = models.CharField('Character Rates', choices=guidelinesscore, max_length=6, blank=False, default="EXCELLENT", help_text="Choose the appropriate grade")
+    chargrades = models.CharField('Character Rates', choices=guidelinesscore, max_length=64, blank=False, default="EXCELLENT", help_text="Choose the appropriate grade")
     dateadded = models.DateField('Date Started', default=date.today)
 
 
@@ -383,7 +450,7 @@ class TestRating(AbstractBaseRating):
 
 
 class StatementAccount(models.Model):
-        studentname = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE, verbose_name="Student Name")
+        studentname = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE, verbose_name="Student Name DB")
         gradeyear = models.ForeignKey('GradeYear', max_length=30, on_delete=models.CASCADE, related_name="statement_gradeyear", verbose_name="Grade Year")
         term = {
             ('A', 'ANNUAL'),
@@ -419,7 +486,7 @@ class StatementAccount(models.Model):
 
 
         def __str__(self):
-            return '%s' % (self.studentname)
+            return '%s %s' % (self.studentname, self.gtotal)
 
         class Meta:
             verbose_name_plural = "Statement of Account"
@@ -431,12 +498,12 @@ class Compute(models.Model):
             studentname = models.ForeignKey('Students', max_length=64, on_delete=models.CASCADE, verbose_name="Student Name")
             testpayment1 = models.DecimalField('Mode of Payment', max_digits=20, decimal_places=2)
             testpayment2 = models.DecimalField('Mode of Payment Price', max_digits=20, decimal_places=2)
-            gtotal = property(gettotal)
-
-
-            @property
-            def gettotal(self):
-                return '%s : %s' % self.testpayment1 * self.testpayment2
+            # gtotal = property(gettotal)
+            #
+            #
+            # @property
+            # def gettotal(self):
+            #     return '%s : %s' % self.testpayment1 * self.testpayment2
 
 
             class Meta:
